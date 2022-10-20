@@ -52,11 +52,11 @@ class MSA(nn.Module):
         super().__init__()
 
         self.num_heads = num_heads
-        self.dimension_of_head = embed_size // num_heads
+        self.embed_size_of_each_head = embed_size // num_heads
 
-        self.Q_linear = nn.ModuleList([nn.Linear(embed_size, self.dimension_of_head) for _ in range(num_heads)])
-        self.K_linear = nn.ModuleList([nn.Linear(embed_size, self.dimension_of_head) for _ in range(num_heads)])
-        self.V_linear = nn.ModuleList([nn.Linear(embed_size, self.dimension_of_head) for _ in range(num_heads)])
+        self.Q_linear = nn.ModuleList([nn.Linear(embed_size, self.embed_size_of_each_head) for _ in range(num_heads)])
+        self.K_linear = nn.ModuleList([nn.Linear(embed_size, self.embed_size_of_each_head) for _ in range(num_heads)])
+        self.V_linear = nn.ModuleList([nn.Linear(embed_size, self.embed_size_of_each_head) for _ in range(num_heads)])
 
         self.softmax = nn.Softmax(dim=-1)
 
@@ -69,7 +69,7 @@ class MSA(nn.Module):
             K = self.K_linear[head](tokens)
             V = self.V_linear[head](tokens)
 
-            Q_K = self.softmax((Q @ K.mT) / self.dimension_of_head)
+            Q_K = self.softmax((Q @ K.mT) / self.embed_size_of_each_head)
 
             attention = Q_K @ V
             attention_list.append(attention)
@@ -114,7 +114,7 @@ class ViT(nn.Module):
         out_features=10 # MNIST
     ):
         super().__init__()
-        # 0) patch-size & enbed-dim    
+        # 0) patch-size & enbedding-dim    
         self.patch_size = patch_size
         self.linear_Embed_size = linear_Embed_size
         # 1) Linear mapper
