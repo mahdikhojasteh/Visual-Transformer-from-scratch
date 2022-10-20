@@ -1,4 +1,6 @@
 /mnist
 /__pycache__
 /.ipynb_checkpoints
+/Butterfly_Image_Classification_75_species   
 model_(tutorial_version).py
+
