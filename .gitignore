@@ -1,0 +1,4 @@
+/mnist
+/__pycache__
+/.ipynb_checkpoints
+model_(tutorial_version).py
